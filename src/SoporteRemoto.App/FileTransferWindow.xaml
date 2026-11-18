@@ -1,0 +1,107 @@
+<Window x:Class="SoporteRemoto.App.FileTransferWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:SoporteRemoto.App"
+        Title="Transferencia de archivos"
+        Height="660" Width="940"
+        MinHeight="560" MinWidth="820"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource AppBackgroundBrush}"
+        FontFamily="Segoe UI Variable Text, Segoe UI"
+        TextOptions.TextFormattingMode="Display"
+        UseLayoutRounding="True">
+    <Border Style="{StaticResource CardStyle}" Margin="18" Padding="24">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.05*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="0.95*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal">
+                <Border Width="48" Height="48" CornerRadius="16" Background="{StaticResource AccentGradient}">
+                    <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" Foreground="White"
+                               FontSize="21" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="Transferencia de archivos" FontSize="20" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                    <TextBlock x:Name="PeerText" Style="{StaticResource MutedTextStyle}" Margin="0,2,0,0"/>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Margin="0,22,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="SendFileButton" Content="Enviar archivo"
+                            Style="{StaticResource GradientButton}" Width="160" Margin="0,0,10,0"
+                            Click="SendFile_Click"/>
+                    <Button x:Name="PullFileButton" Content="Traer archivo del remoto"
+                            Style="{StaticResource SecondaryButton}" Width="190"
+                            Click="PullFile_Click"/>
+                </StackPanel>
+
+                <Border Style="{StaticResource TileStyle}" Margin="0,18,0,0" Padding="16">
+                    <StackPanel>
+                        <TextBlock Text="ESTADO DE LA TRANSFERENCIA" Style="{StaticResource SectionLabelStyle}"/>
+                        <TextBlock x:Name="TransferText" Margin="0,7,0,10" FontSize="12.5"
+                                   Foreground="{StaticResource TextPrimaryBrush}" TextWrapping="Wrap"
+                                   Text="Sesión de solo archivos. Nadie está viendo tu pantalla."/>
+                        <ProgressBar x:Name="TransferBar" Height="8" Minimum="0" Maximum="100" Value="0"
+                                     Foreground="{StaticResource AccentBrush}"
+                                     Background="#E6DDF8" BorderThickness="0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource TileStyle}" Background="{StaticResource TileBlueBrush}"
+                        Margin="0,16,0,0" Padding="16">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE8BD;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                       Foreground="{StaticResource BlueBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="LLAMADA DE AUDIO" Margin="7,0,0,0"
+                                       Style="{StaticResource SectionLabelStyle}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <Button x:Name="AudioCallButton" Content="Iniciar llamada de audio"
+                                    Style="{StaticResource SecondaryButton}" Click="AudioCall_Click"/>
+                            <TextBlock x:Name="AudioStatusText" VerticalAlignment="Center" Margin="12,0,0,0"
+                                       FontSize="11.5" FontWeight="SemiBold"
+                                       Foreground="{StaticResource TextMutedBrush}" TextWrapping="Wrap"
+                                       MaxWidth="220"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource TileStyle}" Background="{StaticResource TilePinkBrush}"
+                        Margin="0,16,0,0" Padding="16">
+                    <StackPanel>
+                        <TextBlock Text="SIN CONTROL DE PANTALLA" Style="{StaticResource SectionLabelStyle}"/>
+                        <TextBlock Margin="0,7,0,0" Style="{StaticResource MutedTextStyle}"
+                                   Text="En esta sesión la otra persona no puede ver tu escritorio ni usar tu ratón o teclado. Solo se comparten archivos."/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <Grid Grid.Row="0" Grid.RowSpan="3" Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="CHAT DE LA SESIÓN" Style="{StaticResource SectionLabelStyle}"
+                           VerticalAlignment="Center" Margin="0,0,0,8"/>
+                <local:ChatPanel x:Name="ChatArea" Grid.Row="1"/>
+            </Grid>
+
+            <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal"
+                        HorizontalAlignment="Right" Margin="0,20,0,0">
+                <Button Content="Finalizar sesión" Style="{StaticResource DangerButton}"
+                        Width="170" Click="End_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

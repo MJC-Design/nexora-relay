@@ -1,0 +1,161 @@
+<Window x:Class="SoporteRemoto.Desktop.RemoteViewerWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:SoporteRemoto.Desktop"
+        Width="1180" Height="760" MinWidth="900" MinHeight="600"
+        WindowStartupLocation="CenterOwner"
+        Background="{StaticResource AppBackground}"
+        FontFamily="{StaticResource AppFont}"
+        UseLayoutRounding="True">
+
+  <Window.Styles>
+    <Style Selector="Button.chat-close">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="Button.chat-close:pointerover /template/ Border#PART_Border">
+      <Setter Property="Background" Value="#33FFFFFF" />
+    </Style>
+    <Style Selector="Button.chat-close:pressed /template/ Border#PART_Border">
+      <Setter Property="Background" Value="#26FFFFFF" />
+    </Style>
+  </Window.Styles>
+
+  <Grid RowDefinitions="Auto,*,Auto">
+
+    <Border Background="{StaticResource SidebarGradient}" Padding="18,12">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <Border Width="40" Height="40" CornerRadius="13" Background="#F2FFFFFF">
+          <Image Source="avares://Nexora/Assets/logo-mark.png" Width="29" Height="24" Stretch="Uniform" />
+        </Border>
+
+        <StackPanel Grid.Column="1" Margin="12,0,16,0" VerticalAlignment="Center">
+          <TextBlock x:Name="TitleText" Text="{DynamicResource Viewer_ScreenLabel}"
+                     FontSize="16" FontWeight="Bold" Foreground="White" />
+          <TextBlock x:Name="InfoText" Text="" FontSize="10.5" Foreground="#D9C7FA" Margin="0,3,0,0"
+                     TextTrimming="CharacterEllipsis" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+          <Button x:Name="SendFileButton" Theme="{StaticResource ToolbarButtonTheme}"
+                  Content="{DynamicResource Viewer_SendFile}" Click="SendFile_Click" />
+          <Button x:Name="PullFileButton" Theme="{StaticResource ToolbarButtonTheme}"
+                  Content="{DynamicResource Viewer_PullFile}" Click="PullFile_Click" />
+
+          <Button x:Name="ChatButton" Theme="{StaticResource ToolbarButtonTheme}"
+                  Content="{DynamicResource Viewer_Chat}" Click="ToggleChat_Click">
+            <Button.ContentTemplate>
+              <DataTemplate>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                  <PathIcon Data="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"
+                            Width="13" Height="13" Foreground="#F3E8FF" />
+                  <TextBlock Text="{Binding}" Foreground="#F3E8FF" />
+                </StackPanel>
+              </DataTemplate>
+            </Button.ContentTemplate>
+          </Button>
+
+          <Button x:Name="VideoButton" Theme="{StaticResource ToolbarButtonTheme}"
+                  Content="{DynamicResource Video_Invite}" Click="VideoCall_Click" />
+
+          <Button x:Name="AudioButton" Theme="{StaticResource ToolbarButtonTheme}"
+                  Content="{DynamicResource Viewer_Audio}" Click="Audio_Click" />
+
+          <Button x:Name="RecordButton" Theme="{StaticResource ToolbarButtonTheme}"
+                  Content="{DynamicResource Viewer_Record}" Click="Record_Click" />
+
+          <Button x:Name="FullscreenButton" Theme="{StaticResource ToolbarButtonTheme}"
+                  Content="{DynamicResource Viewer_Fullscreen}" Click="FullScreen_Click" />
+
+          <Button x:Name="DisconnectButton" Theme="{StaticResource DangerButtonTheme}"
+                  Content="{DynamicResource Viewer_Disconnect}" Click="Disconnect_Click" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="1">
+
+      <Border x:Name="ScreenHost" Margin="16,14,16,10" CornerRadius="18"
+              Background="#17142A" ClipToBounds="True" Focusable="True"
+              PointerMoved="ScreenHost_PointerMoved"
+              PointerPressed="ScreenHost_PointerPressed"
+              PointerReleased="ScreenHost_PointerReleased"
+              PointerWheelChanged="ScreenHost_PointerWheelChanged"
+              KeyDown="ScreenHost_KeyDown" KeyUp="ScreenHost_KeyUp">
+        <Grid>
+          <Image x:Name="ScreenImage" Stretch="Uniform" RenderOptions.BitmapInterpolationMode="HighQuality" />
+
+          <Canvas x:Name="CursorCanvas" IsHitTestVisible="False">
+            <Ellipse x:Name="CursorDot" Width="12" Height="12" Fill="#FFD166"
+                     Stroke="White" StrokeThickness="2" IsVisible="False" />
+          </Canvas>
+
+          <Border x:Name="WaitingBox" HorizontalAlignment="Center" VerticalAlignment="Center"
+                  Background="#CC241C40" CornerRadius="16" Padding="22,16">
+            <StackPanel Spacing="8" HorizontalAlignment="Center">
+              <PathIcon Data="M21 3H3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h7v2H8v2h8v-2h-2v-2h7a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"
+                        Width="22" Height="22" Foreground="#B9A8E8" HorizontalAlignment="Center" />
+              <TextBlock Text="{DynamicResource Viewer_ScreenLabel}" FontSize="12" Foreground="#CFC3EC" />
+            </StackPanel>
+          </Border>
+        </Grid>
+      </Border>
+
+      <Border x:Name="ChatPane" IsVisible="False"
+              Width="308" Height="372"
+              HorizontalAlignment="Right" VerticalAlignment="Bottom"
+              Margin="0,0,34,28"
+              CornerRadius="18" Padding="14,12"
+              Background="#DF1C1536"
+              BorderBrush="#3DFFFFFF" BorderThickness="1"
+              BoxShadow="0 18 46 0 #80120A28">
+        <Border.Resources>
+          <Color x:Key="ScrollBarThumbBackgroundColor">#66FFFFFF</Color>
+          <SolidColorBrush x:Key="ScrollBarPanningThumbBackground" Color="#59FFFFFF" />
+          <SolidColorBrush x:Key="ScrollBarTrackFill" Color="#12FFFFFF" />
+          <SolidColorBrush x:Key="ScrollBarTrackFillPointerOver" Color="#1FFFFFFF" />
+        </Border.Resources>
+        <Grid RowDefinitions="Auto,*">
+          <Grid ColumnDefinitions="Auto,*,Auto" Margin="2,0,0,10">
+            <Border Width="26" Height="26" CornerRadius="9" Background="#26FFFFFF">
+              <Image Source="avares://Nexora/Assets/logo-mark.png" Width="18" Height="15" Stretch="Uniform" />
+            </Border>
+            <StackPanel Grid.Column="1" Margin="9,0,8,0" VerticalAlignment="Center">
+              <TextBlock x:Name="ChatOverlayTitle" Text="{DynamicResource Viewer_ChatTitle}"
+                         FontSize="12.5" FontWeight="Bold" Foreground="White" />
+              <TextBlock x:Name="ChatOverlaySubtitle" Text="" FontSize="9.5"
+                         Foreground="#C9BCE8" Margin="0,1,0,0" TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+            <Button Grid.Column="2" Classes="chat-close" Theme="{StaticResource IconButtonTheme}" Click="ToggleChat_Click"
+                    Width="26" Height="26" Padding="0" VerticalAlignment="Center"
+                    ToolTip.Tip="{DynamicResource Viewer_CloseChat}">
+              <PathIcon Data="M6 6l12 12M18 6L6 18" Width="11" Height="11" Foreground="#E4DBF6" />
+            </Button>
+          </Grid>
+          <local:ChatPanel x:Name="ChatArea" Grid.Row="1" />
+        </Grid>
+      </Border>
+    </Grid>
+
+    <Border Grid.Row="2" Background="White" Padding="18,9">
+      <Grid ColumnDefinitions="*,Auto,Auto">
+        <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+          <TextBlock x:Name="TransferText" Text="{DynamicResource Viewer_SessionActive}"
+                     FontSize="11.5" Foreground="#5E5578" VerticalAlignment="Center"
+                     TextTrimming="CharacterEllipsis" />
+          <Border x:Name="RecBadge" Grid.Column="1" IsVisible="False" Margin="10,0,0,0"
+                  Background="#FDE8E9" CornerRadius="8" Padding="7,2" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Spacing="5">
+              <Ellipse Width="7" Height="7" Fill="#E5484D" VerticalAlignment="Center" />
+              <TextBlock Text="{DynamicResource Viewer_RecordingLabel}" FontSize="9.5"
+                         FontWeight="Bold" Foreground="#C1282D" VerticalAlignment="Center" />
+            </StackPanel>
+          </Border>
+        </Grid>
+        <ProgressBar x:Name="TransferBar" Grid.Column="1" Width="180" Height="7" Minimum="0"
+                     Maximum="1" Value="0" Margin="14,0" VerticalAlignment="Center" />
+        <TextBlock x:Name="AudioStatusText" Grid.Column="2" Text="" FontSize="11"
+                   Foreground="{StaticResource Success}" VerticalAlignment="Center" />
+      </Grid>
+    </Border>
+  </Grid>
+</Window>

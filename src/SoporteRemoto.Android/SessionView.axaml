@@ -1,0 +1,86 @@
+<UserControl x:Class="SoporteRemoto.Android.SessionView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:SoporteRemoto.Android"
+             FontFamily="{StaticResource AppFont}"
+             Background="#120E22">
+
+  <Grid RowDefinitions="Auto,*,Auto">
+
+    <Border Grid.Row="0" Background="#1E1633" Padding="10,8">
+      <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+        <Button x:Name="BackButton" Content="‹" FontSize="22" Padding="10,2" MinHeight="34"
+                Background="Transparent" Foreground="White" Click="Disconnect_Click" />
+        <StackPanel Grid.Column="1" Margin="6,0,8,0" VerticalAlignment="Center" Spacing="1">
+          <TextBlock x:Name="TitleText" Foreground="White" FontSize="13.5" FontWeight="SemiBold"
+                     TextTrimming="CharacterEllipsis" />
+          <TextBlock x:Name="InfoText" Foreground="#C9BCE8" FontSize="10.5" />
+        </StackPanel>
+        <Button x:Name="RightClickButton" Grid.Column="2" Content="{DynamicResource Android_RightClick}"
+                FontSize="10.5" Padding="8,6" MinHeight="32" Background="#2E2450" Foreground="White"
+                Click="RightClick_Click" />
+        <Button x:Name="KeyboardButton" Grid.Column="3" Content="{DynamicResource Android_RemoteKeyboard}"
+                FontSize="10.5" Padding="8,6" MinHeight="32" Background="#2E2450" Foreground="White"
+                Margin="6,0,0,0" Click="Keyboard_Click" />
+        <Button x:Name="ChatButton" Grid.Column="4" Content="{DynamicResource Viewer_Chat}"
+                FontSize="10.5" Padding="8,6" MinHeight="32" Background="#2E2450" Foreground="White"
+                Margin="6,0,0,0" Click="Chat_Click" />
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="1" x:Name="ScreenArea" Background="#0B0817">
+      <Image x:Name="ScreenImage" Stretch="Uniform"
+             PointerMoved="Screen_PointerMoved"
+             PointerPressed="Screen_PointerPressed"
+             PointerReleased="Screen_PointerReleased" />
+      <Canvas IsHitTestVisible="False">
+        <Ellipse x:Name="CursorDot" Width="11" Height="11" Fill="#8B5CF6" Stroke="White"
+                 StrokeThickness="1.5" IsVisible="False" />
+      </Canvas>
+      <Border x:Name="WaitingBox" Background="#B00B0817" VerticalAlignment="Center" HorizontalAlignment="Center"
+              CornerRadius="14" Padding="18,14">
+        <StackPanel Spacing="4">
+          <TextBlock Text="{DynamicResource Video_Waiting}" Foreground="White" FontSize="13" />
+          <TextBlock Text="{DynamicResource Android_ControlHint}" Foreground="#C9BCE8" FontSize="10"
+                     TextWrapping="Wrap" MaxWidth="240" />
+        </StackPanel>
+      </Border>
+      <Border Background="#99000000" VerticalAlignment="Bottom" HorizontalAlignment="Left"
+              CornerRadius="10" Margin="8" Padding="8,4">
+        <TextBlock x:Name="StatusText" Text="" Foreground="White" FontSize="10.5" />
+      </Border>
+    </Grid>
+
+    <StackPanel Grid.Row="2" Background="#1E1633">
+
+      <StackPanel x:Name="KeyboardPanel" IsVisible="False" Margin="10,8" Spacing="6">
+        <TextBox x:Name="TypeBox" Watermark="{DynamicResource Android_TypePlaceholder}" />
+        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+          <Button Classes="primary" Content="{DynamicResource Android_TypeSend}" HorizontalAlignment="Stretch"
+                  Click="SendText_Click" />
+          <Button Grid.Column="1" Classes="ghost" Content="⌨" Click="Keyboard_Click" Padding="14,8" />
+          <Button Grid.Column="2" Classes="ghost" Content="✕" Click="Keyboard_Click" Padding="14,8" />
+        </Grid>
+      </StackPanel>
+
+      <Grid Margin="8,6,8,10" ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
+        <Button Classes="ghost" FontSize="10.5" Padding="6,8" Content="{DynamicResource Android_ScrollUp}"
+                Click="ScrollUp_Click" />
+        <Button Grid.Column="1" Classes="ghost" FontSize="10.5" Padding="6,8"
+                Content="{DynamicResource Android_ScrollDown}" Click="ScrollDown_Click" />
+        <Button Grid.Column="2" Classes="ghost" FontSize="10.5" Padding="6,8"
+                Content="{DynamicResource Viewer_SendFile}" Click="SendFile_Click" />
+        <Button Grid.Column="3" Classes="danger" FontSize="10.5" Padding="6,8"
+                Content="{DynamicResource Viewer_Disconnect}" Click="Disconnect_Click" />
+      </Grid>
+
+    </StackPanel>
+
+    <Border x:Name="ChatPane" Grid.Row="1" IsVisible="False" Height="300" VerticalAlignment="Bottom"
+            Background="#FAFFFFFF" CornerRadius="18,18,0,0" Padding="12,10"
+            BorderBrush="{StaticResource SoftBorder}" BorderThickness="1">
+      <local:ChatPanel x:Name="ChatArea" />
+    </Border>
+
+  </Grid>
+</UserControl>

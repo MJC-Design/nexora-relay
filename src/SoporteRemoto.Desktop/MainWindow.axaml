@@ -1,0 +1,472 @@
+<Window x:Class="SoporteRemoto.Desktop.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{DynamicResource App_WindowTitle}"
+        Width="1260" Height="800" MinWidth="1040" MinHeight="680"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource AppBackground}"
+        FontFamily="{StaticResource AppFont}"
+        UseLayoutRounding="True">
+
+  <Grid ColumnDefinitions="96,*">
+
+    <Border Background="{StaticResource SidebarGradient}" ClipToBounds="True">
+      <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Margin="0,22,0,0" HorizontalAlignment="Center">
+          <Border Width="54" Height="54" CornerRadius="18" Background="#F2FFFFFF"
+                  BoxShadow="0 4 16 0 #33000000">
+            <Image Source="avares://Nexora/Assets/logo-mark.png" Width="40" Height="33" Stretch="Uniform" />
+          </Border>
+          <TextBlock Text="Nexora" Foreground="White" FontSize="10.5" FontWeight="Bold"
+                     HorizontalAlignment="Center" Margin="0,8,0,0" Opacity="0.92" />
+
+          <StackPanel Margin="0,28,0,0" HorizontalAlignment="Center" Spacing="4">
+            <RadioButton x:Name="NavHome" Classes="nav" Theme="{StaticResource NavItemTheme}"
+                         GroupName="Nav" IsChecked="True" Click="Nav_Click"
+                         ToolTip.Tip="{DynamicResource Nav_Home}">
+              <PathIcon Data="M12 3 2 12h3v8h6v-6h2v6h6v-8h3z" Width="21" Height="21" />
+            </RadioButton>
+            <RadioButton x:Name="NavFiles" Classes="nav" Theme="{StaticResource NavItemTheme}"
+                         GroupName="Nav" Click="Nav_Click"
+                         ToolTip.Tip="{DynamicResource Nav_Files}">
+              <PathIcon Data="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8z"
+                        Width="21" Height="21" />
+            </RadioButton>
+            <RadioButton x:Name="NavSettings" Classes="nav" Theme="{StaticResource NavItemTheme}"
+                         GroupName="Nav" Click="Nav_Click"
+                         ToolTip.Tip="{DynamicResource Nav_Settings}">
+              <PathIcon Data="M19.14 12.94a7.07 7.07 0 0 0 0-1.88l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.03 7.03 0 0 0-1.63-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.59.24-1.13.56-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.71 8.84a.5.5 0 0 0 .12.64l2.03 1.58a7.07 7.07 0 0 0 0 1.88l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.3.6.22l2.39-.96c.5.38 1.04.7 1.63.94l.36 2.54c.04.24.25.42.5.42h3.84c.25 0 .46-.18.5-.42l.36-2.54c.59-.24 1.13-.56 1.63-.94l2.39.96c.22.08.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"
+                        Width="21" Height="21" />
+            </RadioButton>
+          </StackPanel>
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center" Margin="0,0,0,18" Spacing="7">
+          <Ellipse Width="8" Height="8" Fill="#C4F7E4" HorizontalAlignment="Center" />
+          <TextBlock Text="v2.0" FontSize="10" Foreground="#D9C7FA" HorizontalAlignment="Center" />
+        </StackPanel>
+      </DockPanel>
+    </Border>
+
+    <Grid Grid.Column="1">
+      <Canvas IsHitTestVisible="False" ClipToBounds="True">
+        <Ellipse Width="430" Height="430" Fill="#DCCBF8" Opacity="0.42" Canvas.Left="800" Canvas.Top="-190" />
+        <Ellipse Width="300" Height="300" Fill="#E9DDFB" Opacity="0.55" Canvas.Left="620" Canvas.Top="560" />
+        <Ellipse Width="190" Height="190" Fill="#F5ECFF" Opacity="0.7" Canvas.Left="330" Canvas.Top="-90" />
+      </Canvas>
+
+      <Grid RowDefinitions="Auto,*">
+        <Grid Margin="30,20,30,0" ColumnDefinitions="*,Auto">
+          <StackPanel>
+            <Image Source="avares://Nexora/Assets/logo-full.png" Height="34"
+                   HorizontalAlignment="Left" Stretch="Uniform" />
+            <TextBlock Text="{DynamicResource Header_Welcome}" FontSize="24" FontWeight="Bold"
+                       Foreground="{StaticResource AccentDeep}" Margin="0,10,0,0" />
+            <TextBlock Text="{DynamicResource Header_Subtitle}" Classes="muted" Margin="0,3,0,0" />
+          </StackPanel>
+
+          <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Spacing="10">
+            <Border x:Name="StatusBadge" Background="#F2EDFC" CornerRadius="16" Padding="13,8">
+              <StackPanel Orientation="Horizontal" Spacing="8">
+                <Ellipse x:Name="StatusDot" Width="8" Height="8" Fill="#A79BC7" VerticalAlignment="Center" />
+                <TextBlock x:Name="RelayStatusText" Text="{DynamicResource Status_Offline}"
+                           FontSize="12" FontWeight="SemiBold" Foreground="#6F678E" />
+              </StackPanel>
+            </Border>
+
+            <Border Background="White" CornerRadius="12" Padding="9,2"
+                    BorderBrush="{StaticResource SoftBorder}" BorderThickness="1">
+              <StackPanel Orientation="Horizontal" Spacing="5">
+                <PathIcon Data="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm6.93 6h-2.95a15.65 15.65 0 0 0-1.38-3.56A8.03 8.03 0 0 1 18.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14A8.2 8.2 0 0 1 4 12c0-.69.1-1.35.26-2h3.38a16.5 16.5 0 0 0 0 4zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8.03 8.03 0 0 1 5.07 16zm2.95-8H5.07a8.03 8.03 0 0 1 4.33-3.56A15.65 15.65 0 0 0 8.02 8zM12 19.96a13.9 13.9 0 0 1-1.91-3.96h3.82A13.9 13.9 0 0 1 12 19.96zM14.34 14H9.66a14.7 14.7 0 0 1 0-4h4.68a14.7 14.7 0 0 1 0 4zm.26 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56zM16.36 14a16.5 16.5 0 0 0 0-4h3.38c.16.65.26 1.31.26 2s-.1 1.35-.26 2z"
+                          Width="15" Height="15" Foreground="{StaticResource Accent}" VerticalAlignment="Center" />
+                <ComboBox x:Name="LanguageBox" Width="126" MinHeight="30" BorderThickness="0"
+                          Background="Transparent" Padding="0" VerticalAlignment="Center"
+                          SelectionChanged="Language_Changed"
+                          ToolTip.Tip="{DynamicResource Header_LanguageTip}" />
+              </StackPanel>
+            </Border>
+
+            <Button Theme="{StaticResource IconButtonTheme}" Click="GoSettings_Click"
+                    ToolTip.Tip="{DynamicResource Header_SettingsTip}">
+              <PathIcon Data="M19.14 12.94a7.07 7.07 0 0 0 0-1.88l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.03 7.03 0 0 0-1.63-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.59.24-1.13.56-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.71 8.84a.5.5 0 0 0 .12.64l2.03 1.58a7.07 7.07 0 0 0 0 1.88l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32c.13.22.39.3.6.22l2.39-.96c.5.38 1.04.7 1.63.94l.36 2.54c.04.24.25.42.5.42h3.84c.25 0 .46-.18.5-.42l.36-2.54c.59-.24 1.13-.56 1.63-.94l2.39.96c.22.08.47 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"
+                        Width="17" Height="17" Foreground="{StaticResource AccentDeep}" />
+            </Button>
+          </StackPanel>
+        </Grid>
+
+        <ScrollViewer x:Name="PageScroller" Grid.Row="1" Margin="30,16,30,24"
+                      VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+          <Grid>
+
+            <Grid x:Name="HomePage" ColumnDefinitions="1.18*,20,0.82*">
+
+              <StackPanel Spacing="18">
+
+                <Border CornerRadius="24" Padding="28" Background="{StaticResource BlueGradient}"
+                        BoxShadow="0 10 34 0 #3D2F80ED">
+                  <StackPanel>
+                    <Grid ColumnDefinitions="*,Auto">
+                      <StackPanel>
+                        <TextBlock Text="{DynamicResource Home_ConnectTitle}" FontSize="20" FontWeight="Bold"
+                                   Foreground="White" />
+                        <TextBlock Text="{DynamicResource Home_ConnectSubtitle}" FontSize="12"
+                                   Foreground="#D8ECFF" Margin="0,5,0,0" TextWrapping="Wrap" />
+                      </StackPanel>
+                      <Border Grid.Column="1" Width="44" Height="44" CornerRadius="14" Background="#26FFFFFF">
+                        <PathIcon Data="M21 3H3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h7v2H8v2h8v-2h-2v-2h7a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"
+                                  Width="21" Height="21" Foreground="White" />
+                      </Border>
+                    </Grid>
+
+                    <TextBlock Text="{DynamicResource Home_CodeLabel}" FontSize="10" FontWeight="Bold"
+                               Foreground="#C9E0FF" Margin="0,22,0,8" />
+                    <TextBox x:Name="CodeInput" Classes="code-input" MaxLength="11"
+                             Watermark="ABC-DEF-GHI" KeyDown="CodeInput_KeyDown"
+                             TextChanged="CodeInput_TextChanged" />
+
+                    <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,14,0,0">
+                      <RadioButton x:Name="ModeScreen" Theme="{StaticResource ModePillTheme}"
+                                   GroupName="ConnectMode" IsChecked="True"
+                                   Content="{DynamicResource Home_ModeScreen}" />
+                      <RadioButton x:Name="ModeFiles" Theme="{StaticResource ModePillTheme}"
+                                   GroupName="ConnectMode"
+                                   Content="{DynamicResource Home_ModeFiles}" />
+                      <RadioButton x:Name="ModeVideo" Theme="{StaticResource ModePillTheme}"
+                                   GroupName="ConnectMode"
+                                   Content="{DynamicResource Home_ModeVideo}" />
+                    </StackPanel>
+
+                    <Button x:Name="ConnectButton" Theme="{StaticResource WhiteButtonTheme}"
+                            Height="48" Margin="0,18,0,0" HorizontalAlignment="Stretch"
+                            Click="Connect_Click">
+                      <Grid>
+                        <TextBlock x:Name="ConnectLabel" Text="{DynamicResource Home_ConnectNow}"
+                                   Foreground="{Binding $parent[Button].Foreground}" />
+                        <TextBlock x:Name="ConnectBusyLabel" Text="{DynamicResource Home_Connecting}"
+                                   Foreground="{Binding $parent[Button].Foreground}" IsVisible="False" />
+                      </Grid>
+                    </Button>
+                    <TextBlock Text="{DynamicResource Home_ConnectHint}" FontSize="11.5"
+                               Foreground="#D8ECFF" Margin="2,12,0,0" TextWrapping="Wrap" />
+                  </StackPanel>
+                </Border>
+
+                <Grid ColumnDefinitions="*,14,*">
+                  <Border Classes="tile">
+                    <StackPanel>
+                      <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Border Width="28" Height="28" CornerRadius="9" Background="#E3F6EC">
+                          <PathIcon Data="M2 20h4v-6H2zm6 0h4V8H8zm6 0h4V2h-4z"
+                                    Width="14" Height="14" Foreground="{StaticResource Success}" />
+                        </Border>
+                        <TextBlock Text="{DynamicResource Home_LanLabel}" Classes="section" VerticalAlignment="Center" />
+                      </StackPanel>
+                      <TextBlock x:Name="LanAddressesText" Text="—" FontSize="11.5" Margin="0,10,0,0"
+                                 FontFamily="{StaticResource CodeFont}" Foreground="#4F876E" TextWrapping="Wrap" />
+                    </StackPanel>
+                  </Border>
+
+                  <Border Grid.Column="2" Classes="tile">
+                    <StackPanel>
+                      <StackPanel Orientation="Horizontal" Spacing="7">
+                        <Border Width="28" Height="28" CornerRadius="9" Background="#EDE6FE">
+                          <PathIcon Data="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5zm-1.2 14.2-3.3-3.3 1.4-1.4 1.9 1.9 4.3-4.3 1.4 1.4z"
+                                    Width="14" Height="14" Foreground="{StaticResource Accent}" />
+                        </Border>
+                        <TextBlock Text="{DynamicResource Home_SecureLabel}" Classes="section" VerticalAlignment="Center" />
+                      </StackPanel>
+                      <TextBlock Text="{DynamicResource Home_SecureText}" FontSize="11.5" Margin="0,10,0,0"
+                                 Foreground="#5E5578" TextWrapping="Wrap" />
+                    </StackPanel>
+                  </Border>
+                </Grid>
+
+                <Border Classes="card" Padding="20,16">
+                  <StackPanel>
+                    <Grid ColumnDefinitions="*,Auto">
+                      <TextBlock Text="{DynamicResource Home_Activity}" Classes="section" VerticalAlignment="Center" />
+                      <PathIcon Grid.Column="1" Data="M12 8v4l3 2" Width="13" Height="13"
+                                Foreground="#B9B0D0" />
+                    </Grid>
+                    <ScrollViewer x:Name="LogScroll" Height="118" Margin="0,9,0,0"
+                                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                      <ItemsControl x:Name="LogItems">
+                        <ItemsControl.ItemTemplate>
+                          <DataTemplate>
+                            <TextBlock Text="{Binding}" FontFamily="{StaticResource CodeFont}" FontSize="11"
+                                       Foreground="#5B5475" TextWrapping="Wrap" Margin="0,0,0,3" />
+                          </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                      </ItemsControl>
+                    </ScrollViewer>
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+
+              <StackPanel Grid.Column="2" Spacing="18">
+
+                <Border Classes="card" Padding="22">
+                  <StackPanel>
+                    <Grid ColumnDefinitions="*,Auto">
+                      <TextBlock Text="{DynamicResource Home_MyPc}" Classes="card-title" VerticalAlignment="Center" />
+                      <CheckBox x:Name="AllowCheck" Grid.Column="1" Theme="{StaticResource ToggleSwitchTheme}"
+                                Content="{DynamicResource Home_Allow}" IsChecked="True" Click="AllowCheck_Changed" />
+                    </Grid>
+
+                    <Border Height="1" Background="{StaticResource SoftBorder}" Margin="0,16,0,14" />
+
+                    <TextBlock Text="{DynamicResource Home_YourCode}" Classes="section" />
+                    <Grid ColumnDefinitions="*,Auto" Margin="0,6,0,0">
+                      <TextBlock x:Name="CodeText" Text="ABC-DEF-GHI" FontFamily="{StaticResource CodeFont}"
+                                 FontSize="29" FontWeight="Bold" Foreground="{StaticResource AccentDeep}"
+                                 VerticalAlignment="Center" />
+                      <Button Grid.Column="1" Theme="{StaticResource IconButtonTheme}" Click="CopyCode_Click"
+                              ToolTip.Tip="{DynamicResource Home_CopyTip}">
+                        <PathIcon Data="M16 1H4a2 2 0 0 0-2 2v14h2V3h12zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z"
+                                  Width="15" Height="15" Foreground="{StaticResource Accent}" />
+                      </Button>
+                    </Grid>
+                    <TextBlock Text="{DynamicResource Home_CodeChanges}" FontSize="11.5"
+                               Foreground="{StaticResource TextMuted}" Margin="0,4,0,0" TextWrapping="Wrap" />
+
+                    <Button Theme="{StaticResource SecondaryButtonTheme}" HorizontalAlignment="Left"
+                            Margin="0,14,0,0" Click="NewCode_Click">
+                      <StackPanel Orientation="Horizontal" Spacing="7">
+                        <PathIcon Data="M17.65 6.35A8 8 0 1 0 20 12h-2a6 6 0 1 1-1.76-4.24L13 11h7V4z"
+                                  Width="12" Height="12" Foreground="{StaticResource AccentDeep}" />
+                        <TextBlock Text="{DynamicResource Home_NewCode}" />
+                      </StackPanel>
+                    </Button>
+                  </StackPanel>
+                </Border>
+
+                <Border Classes="card" Padding="22">
+                  <StackPanel>
+                    <TextBlock Text="{DynamicResource Home_HowTitle}" Classes="section" />
+                    <StackPanel Spacing="12" Margin="0,14,0,0">
+                      <Grid ColumnDefinitions="Auto,*">
+                        <Border Width="24" Height="24" CornerRadius="12" Background="{StaticResource AccentSoft}">
+                          <TextBlock Text="1" FontSize="11" FontWeight="Bold" Foreground="{StaticResource Accent}"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="{DynamicResource Home_Step1}" FontSize="12"
+                                   Margin="9,-1,0,0" TextWrapping="Wrap" Foreground="#4B4466" />
+                      </Grid>
+                      <Grid ColumnDefinitions="Auto,*">
+                        <Border Width="24" Height="24" CornerRadius="12" Background="{StaticResource AccentSoft}">
+                          <TextBlock Text="2" FontSize="11" FontWeight="Bold" Foreground="{StaticResource Accent}"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="{DynamicResource Home_Step2}" FontSize="12"
+                                   Margin="9,-1,0,0" TextWrapping="Wrap" Foreground="#4B4466" />
+                      </Grid>
+                      <Grid ColumnDefinitions="Auto,*">
+                        <Border Width="24" Height="24" CornerRadius="12" Background="{StaticResource AccentSoft}">
+                          <TextBlock Text="3" FontSize="11" FontWeight="Bold" Foreground="{StaticResource Accent}"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="{DynamicResource Home_Step3}" FontSize="12"
+                                   Margin="9,-1,0,0" TextWrapping="Wrap" Foreground="#4B4466" />
+                      </Grid>
+                    </StackPanel>
+                  </StackPanel>
+                </Border>
+
+                <Border Classes="tile" Background="{StaticResource TilePink}">
+                  <Grid ColumnDefinitions="Auto,*">
+                    <Border Width="40" Height="40" CornerRadius="13" Background="White">
+                      <PathIcon Data="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11z"
+                                Width="18" Height="18" Foreground="{StaticResource Pink}" />
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                      <TextBlock Text="{DynamicResource Home_ChatCalls}" Classes="section" Foreground="#C2407E" />
+                      <TextBlock Text="{DynamicResource Home_ChatCallsText}" FontSize="11.5" Margin="0,6,0,0"
+                                 Foreground="#7D4C66" TextWrapping="Wrap" />
+                    </StackPanel>
+                  </Grid>
+                </Border>
+              </StackPanel>
+            </Grid>
+
+            <Grid x:Name="FilesPage" IsVisible="False" ColumnDefinitions="1.18*,20,0.82*">
+
+              <StackPanel Spacing="18">
+                <Border Classes="card" Padding="28">
+                  <StackPanel>
+                    <Grid ColumnDefinitions="Auto,*">
+                      <Border Width="46" Height="46" CornerRadius="15" Background="{StaticResource AccentSoft}">
+                        <PathIcon Data="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8z"
+                                  Width="21" Height="21" Foreground="{StaticResource Accent}" />
+                      </Border>
+                      <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="{DynamicResource Files_Title}" FontSize="20" FontWeight="Bold"
+                                   Foreground="{StaticResource AccentDeep}" />
+                        <TextBlock Text="{DynamicResource Files_Subtitle}" FontSize="12"
+                                   Foreground="{StaticResource TextMuted}" Margin="0,4,0,0" TextWrapping="Wrap" />
+                      </StackPanel>
+                    </Grid>
+
+                    <TextBlock Text="{DynamicResource Files_CodeLabel}" Classes="section" Margin="0,24,0,8" />
+                    <TextBox x:Name="FileCodeInput" Classes="code-input" MaxLength="11"
+                             Watermark="ABC-DEF-GHI" KeyDown="FileCodeInput_KeyDown"
+                             TextChanged="FileCodeInput_TextChanged" />
+
+                    <Border Background="{StaticResource TileBlue}" CornerRadius="12" Padding="13,10" Margin="0,14,0,0">
+                      <TextBlock Text="{DynamicResource Files_ConnectHint}" FontSize="11.5"
+                                 Foreground="#3B5BDB" TextWrapping="Wrap" />
+                    </Border>
+
+                    <Button x:Name="FileConnectButton" Theme="{StaticResource GradientButtonTheme}"
+                            Height="48" Margin="0,16,0,0" HorizontalAlignment="Stretch"
+                            Content="{DynamicResource Files_Connect}" Click="FileConnect_Click" />
+                  </StackPanel>
+                </Border>
+
+                <Border Classes="card" Padding="24">
+                  <StackPanel>
+                    <TextBlock Text="{DynamicResource Files_HowTitle}" Classes="section" />
+                    <Grid ColumnDefinitions="*,18,*" RowDefinitions="Auto,16,Auto" Margin="0,16,0,0">
+                      <Grid ColumnDefinitions="Auto,*">
+                        <Border Width="24" Height="24" CornerRadius="12" Background="{StaticResource AccentSoft}">
+                          <TextBlock Text="1" FontSize="11" FontWeight="Bold" Foreground="{StaticResource Accent}"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="{DynamicResource Files_Step1}" FontSize="12"
+                                   Margin="9,-1,0,0" TextWrapping="Wrap" Foreground="#4B4466" />
+                      </Grid>
+                      <Grid Grid.Column="2" ColumnDefinitions="Auto,*">
+                        <Border Width="24" Height="24" CornerRadius="12" Background="{StaticResource AccentSoft}">
+                          <TextBlock Text="2" FontSize="11" FontWeight="Bold" Foreground="{StaticResource Accent}"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="{DynamicResource Files_Step2}" FontSize="12"
+                                   Margin="9,-1,0,0" TextWrapping="Wrap" Foreground="#4B4466" />
+                      </Grid>
+                      <Grid Grid.Row="2" ColumnDefinitions="Auto,*">
+                        <Border Width="24" Height="24" CornerRadius="12" Background="{StaticResource AccentSoft}">
+                          <TextBlock Text="3" FontSize="11" FontWeight="Bold" Foreground="{StaticResource Accent}"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="{DynamicResource Files_Step3}" FontSize="12"
+                                   Margin="9,-1,0,0" TextWrapping="Wrap" Foreground="#4B4466" />
+                      </Grid>
+                      <Grid Grid.Row="2" Grid.Column="2" ColumnDefinitions="Auto,*">
+                        <Border Width="24" Height="24" CornerRadius="12" Background="{StaticResource AccentSoft}">
+                          <TextBlock Text="4" FontSize="11" FontWeight="Bold" Foreground="{StaticResource Accent}"
+                                     HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <TextBlock Grid.Column="1" Text="{DynamicResource Files_Step4}" FontSize="12"
+                                   Margin="9,-1,0,0" TextWrapping="Wrap" Foreground="#4B4466" />
+                      </Grid>
+                    </Grid>
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+
+              <StackPanel Grid.Column="2" Spacing="18">
+                <Border Classes="tile" Background="{StaticResource TileMint}">
+                  <StackPanel>
+                    <Border Width="40" Height="40" CornerRadius="13" Background="White">
+                      <PathIcon Data="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5z"
+                                Width="18" Height="18" Foreground="{StaticResource Success}" />
+                    </Border>
+                    <TextBlock Text="{DynamicResource Files_NoScreen}" Classes="section" Foreground="#1B7A55"
+                               Margin="0,14,0,0" />
+                    <TextBlock Text="{DynamicResource Files_NoScreenText}" FontSize="11.5" Margin="0,7,0,0"
+                               Foreground="#3E6B5B" TextWrapping="Wrap" />
+                  </StackPanel>
+                </Border>
+
+                <Border Classes="card" Padding="22">
+                  <StackPanel>
+                    <Border Width="40" Height="40" CornerRadius="13" Background="{StaticResource TileBlue}">
+                      <PathIcon Data="M19 9h-4V3H9v6H5l7 7zM5 18v2h14v-2z"
+                                Width="18" Height="18" Foreground="{StaticResource Blue}" />
+                    </Border>
+                    <TextBlock Text="{DynamicResource Files_ChooseFolder}" Classes="section" Margin="0,14,0,0" />
+                    <TextBlock Text="{DynamicResource Files_ChooseFolderText}" FontSize="12" Margin="0,7,0,0"
+                               Foreground="#5E5578" TextWrapping="Wrap" />
+                  </StackPanel>
+                </Border>
+
+                <Border Classes="tile" Background="{StaticResource TilePink}">
+                  <Grid ColumnDefinitions="Auto,*">
+                    <Border Width="38" Height="38" CornerRadius="12" Background="White">
+                      <PathIcon Data="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11z"
+                                Width="17" Height="17" Foreground="{StaticResource Pink}" />
+                    </Border>
+                    <TextBlock Grid.Column="1" Margin="11,0,0,0" Text="{DynamicResource Home_ChatCallsText}"
+                               FontSize="11.5" Foreground="#7D4C66" TextWrapping="Wrap" VerticalAlignment="Center" />
+                  </Grid>
+                </Border>
+              </StackPanel>
+            </Grid>
+
+            <Grid x:Name="SettingsPage" IsVisible="False" ColumnDefinitions="*,20,*">
+
+              <StackPanel Spacing="18">
+                <Border Classes="card">
+                  <StackPanel>
+                    <TextBlock Text="{DynamicResource Settings_RelayTitle}" Classes="card-title" />
+                    <TextBlock Text="{DynamicResource Settings_RelaySubtitle}" Classes="muted" Margin="0,6,0,0" />
+                    <TextBox x:Name="RelayUrlBox" Classes="modern" Margin="0,14,0,0"
+                             FontFamily="{StaticResource CodeFont}" FontSize="12" />
+                    <Button Theme="{StaticResource GradientButtonTheme}" Content="{DynamicResource Settings_Save}"
+                            HorizontalAlignment="Left" Margin="0,12,0,0" Click="SaveRelay_Click" />
+                    <TextBlock Text="{DynamicResource Settings_RelayEmpty}" FontSize="11"
+                               Foreground="{StaticResource TextMuted}" Margin="0,10,0,0" TextWrapping="Wrap" />
+                  </StackPanel>
+                </Border>
+
+                <Border Classes="card">
+                  <StackPanel>
+                    <TextBlock Text="{DynamicResource Settings_LanTitle}" Classes="card-title" />
+                    <TextBlock Text="{DynamicResource Settings_LanSubtitle}" Classes="muted" Margin="0,6,0,0" />
+                    <Border Background="{StaticResource Tile}" CornerRadius="12" Padding="13,10" Margin="0,12,0,0">
+                      <TextBlock x:Name="SettingsLanText" Text="—" FontFamily="{StaticResource CodeFont}"
+                                 FontSize="11.5" Foreground="#5E5578" TextWrapping="Wrap" />
+                    </Border>
+                    <TextBlock Text="{DynamicResource Settings_Ports}" FontSize="11" LineHeight="17"
+                               Foreground="{StaticResource TextMuted}" Margin="0,12,0,0" TextWrapping="Wrap" />
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+
+              <StackPanel Grid.Column="2" Spacing="18">
+                <Border Classes="card">
+                  <StackPanel>
+                    <TextBlock Text="{DynamicResource Settings_LanguageTitle}" Classes="card-title" />
+                    <TextBlock Text="{DynamicResource Settings_LanguageSubtitle}" Classes="muted" Margin="0,6,0,0" />
+                    <ComboBox x:Name="SettingsLanguageBox" Classes="modern" Width="220" HorizontalAlignment="Left"
+                              Margin="0,12,0,0" MinHeight="38"
+                              SelectionChanged="Language_Changed" />
+                  </StackPanel>
+                </Border>
+
+                <Border Classes="card">
+                  <StackPanel>
+                    <TextBlock Text="{DynamicResource Settings_PrivacyTitle}" Classes="card-title" />
+                    <TextBlock Text="{DynamicResource Settings_PrivacyText}" FontSize="12" LineHeight="20"
+                               Foreground="#5E5578" Margin="0,10,0,0" TextWrapping="Wrap" />
+                  </StackPanel>
+                </Border>
+
+                <Border Classes="card">
+                  <StackPanel>
+                    <TextBlock Text="{DynamicResource Settings_AboutTitle}" Classes="card-title" />
+                    <Image Source="avares://Nexora/Assets/logo-full.png" Height="48" Margin="0,14,0,0"
+                           HorizontalAlignment="Left" Stretch="Uniform" />
+                    <TextBlock Text="{DynamicResource Settings_AboutText}" Classes="muted" Margin="0,12,0,0" />
+                    <TextBlock Text="{DynamicResource Settings_Version}" FontSize="11"
+                               Foreground="{StaticResource TextMuted}" Margin="0,5,0,0" />
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+            </Grid>
+
+          </Grid>
+        </ScrollViewer>
+      </Grid>
+    </Grid>
+  </Grid>
+</Window>

@@ -1,0 +1,455 @@
+<Window x:Class="SoporteRemoto.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SoporteRemoto"
+        Height="790" Width="1240"
+        MinHeight="680" MinWidth="1040"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource AppBackgroundBrush}"
+        FontFamily="Segoe UI Variable Text, Segoe UI"
+        TextOptions.TextFormattingMode="Display"
+        UseLayoutRounding="True">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="96"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Barra lateral -->
+        <Border Background="{StaticResource SidebarGradient}">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Margin="0,22,0,0" HorizontalAlignment="Center">
+                    <Border Width="52" Height="52" CornerRadius="18" Background="#3DFFFFFF">
+                        <TextBlock Text="SR" Foreground="White" FontWeight="Bold" FontSize="16"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <StackPanel Margin="0,30,0,0" HorizontalAlignment="Center">
+                        <RadioButton x:Name="NavHome" Style="{StaticResource NavItem}" IsChecked="True"
+                                     GroupName="Nav" Checked="Nav_Checked" ToolTip="Inicio">
+                            <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" FontSize="21"/>
+                        </RadioButton>
+                        <RadioButton x:Name="NavFiles" Style="{StaticResource NavItem}"
+                                     GroupName="Nav" Checked="Nav_Checked" ToolTip="Transferir archivos">
+                            <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" FontSize="21"/>
+                        </RadioButton>
+                        <RadioButton x:Name="NavSettings" Style="{StaticResource NavItem}"
+                                     GroupName="Nav" Checked="Nav_Checked" ToolTip="Ajustes">
+                            <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="21"/>
+                        </RadioButton>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center" Margin="0,0,0,18">
+                    <Ellipse Width="8" Height="8" Fill="#C4F7E4" Margin="0,0,0,6"/>
+                    <TextBlock Text="v1.1" FontSize="10" Foreground="#D9C7FA"/>
+                </StackPanel>
+                <Canvas/>
+            </DockPanel>
+        </Border>
+
+        <!-- Contenido -->
+        <Grid Grid.Column="1">
+            <Canvas ClipToBounds="True" IsHitTestVisible="False">
+                <Ellipse Width="420" Height="420" Fill="#D9C8F8" Opacity="0.45" Canvas.Left="820" Canvas.Top="-170"/>
+                <Ellipse Width="300" Height="300" Fill="#C7B2F4" Opacity="0.30" Canvas.Left="-90" Canvas.Top="560"/>
+                <Ellipse Width="130" Height="130" Fill="#E9D5FF" Opacity="0.55" Canvas.Left="640" Canvas.Top="700"/>
+                <Ellipse Width="64" Height="64" Fill="#F0ABFC" Opacity="0.35" Canvas.Left="1080" Canvas.Top="330"/>
+            </Canvas>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Encabezado -->
+                <Grid Margin="30,22,30,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <TextBlock Text="¡Bienvenido a SoporteRemoto!" FontSize="25" FontWeight="Bold"
+                                   Foreground="{StaticResource AccentDeepBrush}"/>
+                        <TextBlock Text="Asistencia remota simple, con chat, llamadas y archivos."
+                                   Margin="0,4,0,0" Style="{StaticResource MutedTextStyle}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border x:Name="StatusBadge" Background="#F2EDFC" CornerRadius="16" Padding="13,8">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse x:Name="StatusDot" Width="8" Height="8" Fill="#A79BC7" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="RelayStatusText" Text="Sin conexión a Internet" Margin="8,0,0,0"
+                                           FontSize="12" FontWeight="SemiBold" Foreground="#6F678E"/>
+                            </StackPanel>
+                        </Border>
+                        <Button Style="{StaticResource IconButton}" Margin="10,0,0,0"
+                                Content="&#xE713;" FontSize="17" Foreground="#8B5CF6"
+                                Click="GoSettings_Click" ToolTip="Ajustes"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Páginas -->
+                <ScrollViewer x:Name="PageScroller" Grid.Row="1" Margin="30,18,30,24" VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <Grid>
+                        <!-- Inicio -->
+                        <Grid x:Name="HomePage">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.1*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="0.9*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <!-- Tarjeta azul de conexión -->
+                                <Border CornerRadius="22" Padding="26" Background="{StaticResource BlueGradient}">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="26" ShadowDepth="5" Direction="270"
+                                                          Color="#2F80ED" Opacity="0.28"/>
+                                    </Border.Effect>
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Border Width="44" Height="44" CornerRadius="14" Background="#33FFFFFF">
+                                                <TextBlock Text="&#xE7F4;" FontFamily="Segoe MDL2 Assets" FontSize="19"
+                                                           Foreground="White" HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
+                                            <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
+                                                <TextBlock Text="Conectar a un equipo" FontSize="19" FontWeight="Bold"
+                                                           Foreground="White"/>
+                                                <TextBlock Text="Escribe el código que aparece en el otro equipo."
+                                                           FontSize="12" Foreground="#EAF4FF" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <TextBlock Text="CÓDIGO DE SESIÓN" Margin="2,20,0,8" FontSize="10.5"
+                                                   FontWeight="Bold" Foreground="#D8ECFF"/>
+                                        <TextBox x:Name="CodeInput" Style="{StaticResource CodeInputStyle}"
+                                                 KeyDown="CodeInput_KeyDown"/>
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+                                            <RadioButton x:Name="ModeScreen" Style="{StaticResource ModePill}"
+                                                         GroupName="ConnectMode" IsChecked="True"
+                                                         Content="Controlar pantalla"/>
+                                            <RadioButton x:Name="ModeFiles" Style="{StaticResource ModePill}"
+                                                         GroupName="ConnectMode" Margin="8,0,0,0"
+                                                         Content="Solo archivos"/>
+                                        </StackPanel>
+
+                                        <Button x:Name="ConnectButton" Content="Conectar ahora"
+                                                Style="{StaticResource WhiteButton}" Height="48"
+                                                Margin="0,16,0,0" Click="Connect_Click"/>
+                                        <TextBlock Text="Se conecta sola por tu red local o por Internet."
+                                                   FontSize="11.5" Foreground="#D8ECFF" Margin="2,12,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Tarjetas informativas -->
+                                <Grid Margin="0,18,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="14"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Style="{StaticResource TileStyle}">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE701;" FontFamily="Segoe MDL2 Assets"
+                                                           FontSize="15" Foreground="{StaticResource AccentBrush}"
+                                                           VerticalAlignment="Center"/>
+                                                <TextBlock Text="RED LOCAL" Margin="7,0,0,0"
+                                                           Style="{StaticResource SectionLabelStyle}"
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <TextBlock x:Name="LanAddressesText" Margin="0,8,0,0"
+                                                       FontFamily="Consolas" FontSize="11.5"
+                                                       Foreground="{StaticResource TextMutedBrush}"
+                                                       TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Grid.Column="2" Style="{StaticResource TileStyle}"
+                                            Background="{StaticResource TileBlueBrush}">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets"
+                                                           FontSize="15" Foreground="{StaticResource BlueBrush}"
+                                                           VerticalAlignment="Center"/>
+                                                <TextBlock Text="CONEXIÓN SEGURA" Margin="7,0,0,0"
+                                                           Style="{StaticResource SectionLabelStyle}"
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <TextBlock Text="Solo entra quien tenga tu código de 9 caracteres."
+                                                       Margin="0,8,0,0" Style="{StaticResource MutedTextStyle}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+
+                                <!-- Actividad -->
+                                <Border Style="{StaticResource CardStyle}" Padding="20,16" Margin="0,18,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="ACTIVIDAD" Style="{StaticResource SectionLabelStyle}"/>
+                                        <TextBox x:Name="LogBox" IsReadOnly="True" BorderThickness="0"
+                                                 Background="Transparent" FontFamily="Consolas" FontSize="11.5"
+                                                 Height="118" Margin="0,8,0,0" VerticalScrollBarVisibility="Auto"
+                                                 HorizontalScrollBarVisibility="Auto" TextWrapping="NoWrap"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                            <!-- Mi equipo -->
+                            <StackPanel Grid.Column="2">
+                                <Border Style="{StaticResource CardStyle}">
+                                    <StackPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Mi equipo" Style="{StaticResource CardTitleStyle}"
+                                                       VerticalAlignment="Center"/>
+                                            <CheckBox x:Name="AllowCheck" Style="{StaticResource ToggleSwitch}"
+                                                      Content="Permitir conexiones" HorizontalAlignment="Right"
+                                                      IsChecked="True" Checked="AllowCheck_Changed"
+                                                      Unchecked="AllowCheck_Changed"/>
+                                        </DockPanel>
+
+                                        <TextBlock Text="TU CÓDIGO DE SESIÓN" Margin="0,20,0,6"
+                                                   Style="{StaticResource SectionLabelStyle}"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock x:Name="CodeText" Text="---------" FontFamily="Consolas"
+                                                       FontSize="33" FontWeight="Bold"
+                                                       Foreground="{StaticResource AccentDeepBrush}"
+                                                       VerticalAlignment="Center"/>
+                                            <Button Grid.Column="1" Style="{StaticResource IconButton}"
+                                                    Content="&#xE8C8;" FontSize="15" ToolTip="Copiar código"
+                                                    VerticalAlignment="Center" Click="CopyCode_Click"/>
+                                        </Grid>
+                                        <TextBlock Text="Este código cambia cada vez que abres el programa."
+                                                   Margin="0,4,0,0" Style="{StaticResource MutedTextStyle}"/>
+                                        <Button Style="{StaticResource SecondaryButton}" HorizontalAlignment="Left"
+                                                Margin="0,12,0,0" Click="NewCode_Click">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets"
+                                                           FontSize="12" Margin="0,0,7,0" VerticalAlignment="Center"/>
+                                                <TextBlock Text="Nuevo código" TextWrapping="NoWrap"/>
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Border Height="1" Background="{StaticResource SoftBorderBrush}"
+                                                Margin="0,20,0,16"/>
+
+                                        <TextBlock Text="¿CÓMO FUNCIONA?" Style="{StaticResource SectionLabelStyle}"/>
+                                        <StackPanel Margin="0,10,0,0">
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,9">
+                                                <Border Width="24" Height="24" CornerRadius="12"
+                                                        Background="{StaticResource AccentSoftBrush}">
+                                                    <TextBlock Text="1" FontSize="11" FontWeight="Bold"
+                                                               Foreground="{StaticResource AccentBrush}"
+                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <TextBlock Text="Comparte tu código con la persona de soporte."
+                                                           Margin="10,0,0,0" VerticalAlignment="Center"
+                                                           FontSize="12.5" Foreground="{StaticResource TextMutedBrush}"
+                                                           TextWrapping="Wrap" MaxWidth="230"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,9">
+                                                <Border Width="24" Height="24" CornerRadius="12"
+                                                        Background="{StaticResource AccentSoftBrush}">
+                                                    <TextBlock Text="2" FontSize="11" FontWeight="Bold"
+                                                               Foreground="{StaticResource AccentBrush}"
+                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <TextBlock Text="Acepta la solicitud que aparecerá en tu pantalla."
+                                                           Margin="10,0,0,0" VerticalAlignment="Center"
+                                                           FontSize="12.5" Foreground="{StaticResource TextMutedBrush}"
+                                                           TextWrapping="Wrap" MaxWidth="230"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Border Width="24" Height="24" CornerRadius="12"
+                                                        Background="{StaticResource AccentSoftBrush}">
+                                                    <TextBlock Text="3" FontSize="11" FontWeight="Bold"
+                                                               Foreground="{StaticResource AccentBrush}"
+                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <TextBlock Text="Chatea, habla y comparte archivos durante la sesión."
+                                                           Margin="10,0,0,0" VerticalAlignment="Center"
+                                                           FontSize="12.5" Foreground="{StaticResource TextMutedBrush}"
+                                                           TextWrapping="Wrap" MaxWidth="230"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource TileStyle}" Background="{StaticResource TilePinkBrush}"
+                                        Margin="0,18,0,0">
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#xE8BD;" FontFamily="Segoe MDL2 Assets"
+                                                       FontSize="15" Foreground="{StaticResource PinkBrush}"
+                                                       VerticalAlignment="Center"/>
+                                            <TextBlock Text="CHAT Y LLAMADAS" Margin="7,0,0,0"
+                                                       Style="{StaticResource SectionLabelStyle}"
+                                                       VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                        <TextBlock Margin="0,8,0,0" Style="{StaticResource MutedTextStyle}"
+                                                   Text="Durante la sesión puedes escribir mensajes y activar una llamada de audio para hablar mientras brindas soporte."/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Archivos -->
+                        <Grid x:Name="FilesPage" Visibility="Collapsed">
+                            <StackPanel>
+                                <Border Style="{StaticResource CardStyle}" Padding="30">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1.1*"/>
+                                            <ColumnDefinition Width="26"/>
+                                            <ColumnDefinition Width="0.9*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Border Width="48" Height="48" CornerRadius="16"
+                                                        Background="{StaticResource AccentGradient}">
+                                                    <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets"
+                                                               FontSize="21" Foreground="White"
+                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                                <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
+                                                    <TextBlock Text="Transferir archivos" FontSize="21"
+                                                               FontWeight="Bold"
+                                                               Foreground="{StaticResource TextPrimaryBrush}"/>
+                                                    <TextBlock Text="Envía y recibe archivos sin compartir ni ver la pantalla."
+                                                               Style="{StaticResource MutedTextStyle}" Margin="0,2,0,0"/>
+                                                </StackPanel>
+                                            </StackPanel>
+
+                                            <TextBlock Text="CÓDIGO DE SESIÓN" Margin="2,26,0,8"
+                                                       Style="{StaticResource SectionLabelStyle}"/>
+                                            <TextBox x:Name="FileCodeInput" Style="{StaticResource CodeInputStyle}"
+                                                     Height="58" KeyDown="FileCodeInput_KeyDown"/>
+                                            <Button x:Name="FileConnectButton" Content="Conectar para transferir"
+                                                    Style="{StaticResource GradientButton}" Height="48"
+                                                    Margin="0,16,0,0" Click="FileConnect_Click"/>
+                                            <TextBlock Text="La otra persona verá una solicitud para aceptar la transferencia. Ambos podrán enviarse archivos y chatear."
+                                                       Margin="2,14,0,0" Style="{StaticResource MutedTextStyle}"/>
+                                        </StackPanel>
+
+                                        <Border Grid.Column="2" Style="{StaticResource TileStyle}"
+                                                VerticalAlignment="Center">
+                                            <StackPanel>
+                                                <TextBlock Text="¿CÓMO FUNCIONA?" Style="{StaticResource SectionLabelStyle}"/>
+                                                <StackPanel Margin="0,12,0,0">
+                                                    <TextBlock Text="1.  Escribe el código de la otra persona."
+                                                               FontSize="12.5" Margin="0,0,0,10"
+                                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                                               TextWrapping="Wrap"/>
+                                                    <TextBlock Text="2.  La otra persona acepta la transferencia."
+                                                               FontSize="12.5" Margin="0,0,0,10"
+                                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                                               TextWrapping="Wrap"/>
+                                                    <TextBlock Text="3.  Elige los archivos que quieres enviar."
+                                                               FontSize="12.5" Margin="0,0,0,10"
+                                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                                               TextWrapping="Wrap"/>
+                                                    <TextBlock Text="4.  También pueden chatear y llamar por audio."
+                                                               FontSize="12.5"
+                                                               Foreground="{StaticResource TextPrimaryBrush}"
+                                                               TextWrapping="Wrap"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+
+                                <Grid Margin="0,18,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="18"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Style="{StaticResource TileStyle}" Background="{StaticResource TileBlueBrush}">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets"
+                                                           FontSize="15" Foreground="{StaticResource BlueBrush}"/>
+                                                <TextBlock Text="TÚ ELIGES DÓNDE GUARDAR" Margin="7,0,0,0"
+                                                           Style="{StaticResource SectionLabelStyle}"
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <TextBlock Margin="0,8,0,0" Style="{StaticResource MutedTextStyle}"
+                                                       Text="Cada archivo recibido te pregunta en qué carpeta guardarlo. Nada se guarda sin tu permiso."/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Grid.Column="2" Style="{StaticResource TileStyle}">
+                                        <StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets"
+                                                           FontSize="15" Foreground="{StaticResource AccentBrush}"/>
+                                                <TextBlock Text="SIN CONTROL DE PANTALLA" Margin="7,0,0,0"
+                                                           Style="{StaticResource SectionLabelStyle}"
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <TextBlock Margin="0,8,0,0" Style="{StaticResource MutedTextStyle}"
+                                                       Text="En este modo la otra persona no puede ver tu pantalla ni mover el ratón. Solo se transfieren archivos."/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Ajustes -->
+                        <Grid x:Name="SettingsPage" Visibility="Collapsed">
+                            <StackPanel>
+                                <Border Style="{StaticResource CardStyle}" Padding="30">
+                                    <StackPanel>
+                                        <TextBlock Text="Servidor de Internet" Style="{StaticResource CardTitleStyle}"/>
+                                        <TextBlock Margin="0,4,0,0" Style="{StaticResource MutedTextStyle}"
+                                                   Text="Dirección del servidor relay que permite conectar equipos cuando no están en la misma red."/>
+                                        <Grid Margin="0,16,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox x:Name="RelayUrlBox" Style="{StaticResource ModernTextBox}"
+                                                     MinHeight="44" FontFamily="Consolas" FontSize="12.5"/>
+                                            <Button Grid.Column="1" Content="Guardar" Style="{StaticResource GradientButton}"
+                                                    Margin="10,0,0,0" Padding="24,10" Click="SaveRelay_Click"/>
+                                        </Grid>
+                                        <TextBlock Margin="2,10,0,0" Style="{StaticResource MutedTextStyle}"
+                                                   Text="Puedes dejarlo vacío para usar únicamente la red local."/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource CardStyle}" Padding="30" Margin="0,18,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="Red local" Style="{StaticResource CardTitleStyle}"/>
+                                        <TextBlock Margin="0,4,0,0" Style="{StaticResource MutedTextStyle}"
+                                                   Text="Estas son las direcciones con las que otros equipos de tu red pueden encontrarte."/>
+                                        <Border Style="{StaticResource TileStyle}" Margin="0,14,0,0">
+                                            <TextBlock x:Name="SettingsLanText" FontFamily="Consolas" FontSize="12.5"
+                                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                                       TextWrapping="Wrap"/>
+                                        </Border>
+                                        <TextBlock Margin="0,12,0,0" Style="{StaticResource MutedTextStyle}"
+                                                   Text="Puertos usados: TCP 51429 para las sesiones y UDP 51430 para el descubrimiento. Permítelos en el Firewall de Windows si la red local no aparece."/>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource CardStyle}" Padding="30" Margin="0,18,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="Privacidad y seguridad" Style="{StaticResource CardTitleStyle}"/>
+                                        <TextBlock Margin="0,12,0,0" Style="{StaticResource MutedTextStyle}"
+                                                   Text="• Cada conexión necesita tu código de 9 caracteres y tu aprobación.&#10;• La pantalla solo se comparte en el modo «Controlar pantalla».&#10;• En el modo «Solo archivos» nadie ve ni controla tu escritorio.&#10;• Puedes finalizar cualquier sesión desde la ventana de la sesión."/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

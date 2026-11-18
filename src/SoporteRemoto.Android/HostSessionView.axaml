@@ -1,0 +1,69 @@
+<UserControl x:Class="SoporteRemoto.Android.HostSessionView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:SoporteRemoto.Android"
+             FontFamily="{StaticResource AppFont}"
+             Background="{StaticResource AppBackground}">
+
+  <Grid RowDefinitions="Auto,*,Auto">
+
+    <Border Grid.Row="0" Background="{StaticResource HeaderGradient}" Padding="16,12">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Spacing="1" VerticalAlignment="Center">
+          <TextBlock x:Name="TitleText" Foreground="White" FontSize="15" FontWeight="Bold"
+                     TextTrimming="CharacterEllipsis" />
+          <TextBlock x:Name="InfoText" Foreground="#E7DBFF" FontSize="11" />
+        </StackPanel>
+        <Button Grid.Column="1" Classes="danger" Content="{DynamicResource Host_EndSession}"
+                FontSize="11" Padding="12,6" MinHeight="34" Click="End_Click" />
+      </Grid>
+    </Border>
+
+    <ScrollViewer Grid.Row="1">
+      <StackPanel Margin="16,14,16,16" Spacing="12">
+
+        <Border Classes="card">
+          <StackPanel Spacing="10">
+            <TextBlock Text="{DynamicResource Host_TitleScreen}" Classes="h1" />
+            <TextBlock x:Name="ModeText" Classes="muted" />
+            <Border Background="{StaticResource Tile}" CornerRadius="14" Padding="12,10">
+              <StackPanel Spacing="4">
+                <TextBlock Text="{DynamicResource Android_ShareTitle}" Classes="label" />
+                <TextBlock x:Name="ShareStatusText" Classes="h2" />
+              </StackPanel>
+            </Border>
+            <Button x:Name="ShareButton" Classes="primary" Content="{DynamicResource Android_ShareNow}"
+                    HorizontalAlignment="Stretch" Click="Share_Click" />
+            <Button x:Name="AccessButton" Classes="ghost" Content="{DynamicResource Android_AccessOff}"
+                    HorizontalAlignment="Stretch" Click="Access_Click" />
+            <TextBlock Text="{DynamicResource Android_SessionNote}" Classes="muted" FontSize="11" />
+          </StackPanel>
+        </Border>
+
+        <Border Classes="card">
+          <StackPanel Spacing="6">
+            <TextBlock Text="{DynamicResource Home_Activity}" Classes="label" />
+            <TextBlock x:Name="StatusText" Classes="muted" FontSize="11.5" TextWrapping="Wrap" />
+          </StackPanel>
+        </Border>
+
+      </StackPanel>
+    </ScrollViewer>
+
+    <Border Grid.Row="2" Background="White" BorderBrush="{StaticResource SoftBorder}" BorderThickness="0,1,0,0"
+            Padding="10,8">
+      <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+        <Button x:Name="ChatButton" Classes="ghost" Content="{DynamicResource Viewer_Chat}"
+                HorizontalAlignment="Stretch" Click="Chat_Click" />
+        <Button Grid.Column="1" Classes="danger" Content="{DynamicResource Viewer_Disconnect}" Click="End_Click" />
+      </Grid>
+    </Border>
+
+    <Border x:Name="ChatPane" Grid.Row="1" Grid.RowSpan="2" IsVisible="False" Height="320" VerticalAlignment="Bottom"
+            Background="#FAFFFFFF" CornerRadius="18,18,0,0" Padding="12,10"
+            BorderBrush="{StaticResource SoftBorder}" BorderThickness="1">
+      <local:ChatPanel x:Name="ChatArea" />
+    </Border>
+
+  </Grid>
+</UserControl>

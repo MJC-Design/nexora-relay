@@ -1,0 +1,15 @@
+**/bin
+**/obj
+**/.vs
+**/.idea
+**/.vscode
+**/.git
+publish
+tools
+src/SoporteRemoto.Android
+src/SoporteRemoto.Desktop
+src/SoporteRemoto.Engine
+*.apk
+*.aab
+*.keystore
+*.jks

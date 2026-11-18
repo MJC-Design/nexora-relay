@@ -1,0 +1,192 @@
+<UserControl x:Class="SoporteRemoto.Android.MainView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             FontFamily="{StaticResource AppFont}"
+             Background="{StaticResource AppBackground}">
+
+  <Grid x:Name="RootGrid" RowDefinitions="Auto,*,Auto">
+
+    <Border Grid.Row="0" Background="{StaticResource HeaderGradient}" CornerRadius="0,0,22,22" Padding="18,16">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <Image Source="avares://Nexora/Assets/logo-mark-128.png" Width="36" Height="36" />
+        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center" Spacing="1">
+          <TextBlock Text="Nexora" Foreground="White" FontSize="19" FontWeight="Bold" />
+          <TextBlock Text="{DynamicResource Header_Subtitle}" Foreground="#E7DBFF" FontSize="11" />
+        </StackPanel>
+        <Border Grid.Column="2" Background="#33FFFFFF" CornerRadius="10" Padding="9,5" VerticalAlignment="Center">
+          <TextBlock x:Name="RelayStatusText" Text="—" Foreground="White" FontSize="11" FontWeight="SemiBold" />
+        </Border>
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="1">
+
+      <!-- Inicio -->
+      <ScrollViewer x:Name="HomePage">
+        <StackPanel Margin="16,14,16,20" Spacing="12">
+
+          <Border Classes="card">
+            <StackPanel Spacing="12">
+              <TextBlock Text="{DynamicResource Android_ShareTitle}" Classes="h1" />
+              <TextBlock Text="{DynamicResource Android_ShareSubtitle}" Classes="muted" />
+
+              <Grid ColumnDefinitions="*,Auto">
+                <StackPanel Spacing="2" VerticalAlignment="Center">
+                  <TextBlock Text="{DynamicResource Home_Allow}" Classes="h2" />
+                  <TextBlock Text="{DynamicResource Android_ShareReady}" Classes="muted" FontSize="11.5" />
+                </StackPanel>
+                <ToggleSwitch x:Name="AllowSwitch" Grid.Column="1" />
+              </Grid>
+
+              <Border Background="{StaticResource Tile}" CornerRadius="14" Padding="14,10">
+                <Grid ColumnDefinitions="*,Auto">
+                  <StackPanel Spacing="2">
+                    <TextBlock Text="{DynamicResource Home_YourCode}" Classes="label" />
+                    <TextBlock x:Name="CodeText" Text="— — —" FontSize="24" FontWeight="Bold"
+                               LetterSpacing="2" FontFamily="{StaticResource CodeFont}" />
+                  </StackPanel>
+                  <Button x:Name="CopyButton" Grid.Column="1" Classes="ghost" Padding="12,8"
+                          VerticalAlignment="Center" Content="{DynamicResource Home_NewCode}" Click="NewCode_Click" />
+                </Grid>
+              </Border>
+
+              <Button x:Name="ShareButton" Classes="primary" Content="{DynamicResource Android_ShareNow}"
+                      HorizontalAlignment="Stretch" Click="Share_Click" />
+              <Button x:Name="StopShareButton" Classes="danger" Content="{DynamicResource Android_StopShare}"
+                      HorizontalAlignment="Stretch" IsVisible="False" Click="StopShare_Click" />
+              <TextBlock x:Name="ShareStatusText" Classes="muted" FontSize="11.5" />
+
+              <Button x:Name="AccessButton" Classes="ghost" Content="{DynamicResource Android_AccessOff}"
+                      HorizontalAlignment="Stretch" Click="Access_Click" />
+              <TextBlock x:Name="AccessStatusText" Classes="muted" FontSize="11.5" />
+
+              <TextBlock Text="{DynamicResource Android_SessionNote}" Classes="muted" FontSize="11" />
+            </StackPanel>
+          </Border>
+
+          <Border Classes="card">
+            <StackPanel Spacing="8">
+              <TextBlock Text="{DynamicResource Home_LanLabel}" Classes="label" />
+              <TextBlock x:Name="LanText" Classes="muted" FontSize="12" />
+              <TextBlock Text="{DynamicResource Android_RelayHint}" Classes="muted" FontSize="11" />
+            </StackPanel>
+          </Border>
+
+          <Border Classes="card">
+            <StackPanel Spacing="6">
+              <TextBlock Text="{DynamicResource Home_Activity}" Classes="label" />
+              <ScrollViewer MaxHeight="180" VerticalScrollBarVisibility="Auto">
+                <ItemsControl x:Name="LogItems">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding}" FontSize="11" Foreground="{StaticResource TextMuted}"
+                                 TextWrapping="Wrap" Margin="0,0,0,4" />
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </ScrollViewer>
+            </StackPanel>
+          </Border>
+
+        </StackPanel>
+      </ScrollViewer>
+
+      <!-- Conectar -->
+      <ScrollViewer x:Name="ConnectPage" IsVisible="False">
+        <StackPanel Margin="16,14,16,20" Spacing="12">
+          <Border Classes="card">
+            <StackPanel Spacing="12">
+              <TextBlock Text="{DynamicResource Home_ConnectTitle}" Classes="h1" />
+              <TextBlock Text="{DynamicResource Android_ConnectHint}" Classes="muted" />
+              <TextBox x:Name="CodeInput" MaxLength="11" FontSize="21" FontFamily="{StaticResource CodeFont}"
+                       Watermark="ABC 123 XYZ" HorizontalContentAlignment="Center" TextChanged="CodeInput_TextChanged" />
+              <StackPanel Spacing="4">
+                <TextBlock Text="{DynamicResource Home_ModeScreen}" Classes="label" />
+                <ComboBox x:Name="ModeBox" HorizontalAlignment="Stretch" />
+              </StackPanel>
+              <Button x:Name="ConnectButton" Classes="primary" Content="{DynamicResource Home_ConnectNow}"
+                      HorizontalAlignment="Stretch" Click="Connect_Click" />
+              <TextBlock Text="{DynamicResource Home_ConnectHint}" Classes="muted" FontSize="11" />
+            </StackPanel>
+          </Border>
+
+          <Border Classes="card">
+            <StackPanel Spacing="6">
+              <TextBlock Text="{DynamicResource Android_YourName}" Classes="label" />
+              <TextBlock x:Name="DeviceNameText" Classes="h2" />
+              <TextBlock Text="{DynamicResource Android_ViewOnly}" Classes="muted" FontSize="11" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </ScrollViewer>
+
+      <!-- Ajustes -->
+      <ScrollViewer x:Name="SettingsPage" IsVisible="False">
+        <StackPanel Margin="16,14,16,20" Spacing="12">
+
+          <Border Classes="card">
+            <StackPanel Spacing="10">
+              <TextBlock Text="{DynamicResource Settings_RelayTitle}" Classes="h1" />
+              <TextBlock Text="{DynamicResource Settings_RelaySubtitle}" Classes="muted" />
+              <TextBox x:Name="RelayBox" Watermark="ws://servidor:5080" />
+              <Button Classes="primary" Content="{DynamicResource Settings_Save}" HorizontalAlignment="Stretch"
+                      Click="SaveRelay_Click" />
+            </StackPanel>
+          </Border>
+
+          <Border Classes="card">
+            <StackPanel Spacing="10">
+              <TextBlock Text="{DynamicResource Android_Language}" Classes="h2" />
+              <ComboBox x:Name="LanguageBox" HorizontalAlignment="Stretch" />
+            </StackPanel>
+          </Border>
+
+          <Border Classes="card">
+            <StackPanel Spacing="8">
+              <TextBlock Text="{DynamicResource Android_AccessTitle}" Classes="h2" />
+              <TextBlock Text="{DynamicResource Android_AccessHint}" Classes="muted" />
+              <Button Classes="ghost" Content="{DynamicResource Home_MyPc}" HorizontalAlignment="Stretch"
+                      Click="Access_Click" />
+            </StackPanel>
+          </Border>
+
+          <Border Classes="card">
+            <StackPanel Spacing="6">
+              <TextBlock Text="{DynamicResource Settings_AboutTitle}" Classes="h2" />
+              <TextBlock Text="Nexora 1.0 · Android" Classes="muted" FontSize="11.5" />
+              <TextBlock Text="{DynamicResource Settings_PrivacyText}" Classes="muted" FontSize="11" />
+            </StackPanel>
+          </Border>
+
+        </StackPanel>
+      </ScrollViewer>
+
+    </Grid>
+
+    <Border Grid.Row="2" Background="White" BorderBrush="{StaticResource SoftBorder}" BorderThickness="0,1,0,0">
+      <Grid ColumnDefinitions="*,*,*" Margin="10,6">
+        <Button x:Name="HomeNav" Classes="nav active" Content="{DynamicResource Nav_Home}" Click="Nav_Click" />
+        <Button x:Name="ConnectNav" Grid.Column="1" Classes="nav" Content="{DynamicResource Home_ConnectNow}" Click="Nav_Click" />
+        <Button x:Name="SettingsNav" Grid.Column="2" Classes="nav" Content="{DynamicResource Nav_Settings}" Click="Nav_Click" />
+      </Grid>
+    </Border>
+
+    <!-- Aprobación de conexión entrante -->
+    <Grid x:Name="AcceptOverlay" Grid.RowSpan="3" IsVisible="False" Background="#B0120E22">
+      <Border Classes="card" Margin="24" VerticalAlignment="Center">
+        <StackPanel Spacing="12">
+          <TextBlock Text="{DynamicResource Accept_Title}" Classes="h1" />
+          <TextBlock x:Name="AcceptText" Classes="muted" TextWrapping="Wrap" />
+          <TextBlock x:Name="AcceptAddress" Classes="muted" FontSize="11" />
+          <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+            <Button x:Name="RejectButton" Classes="ghost" Content="{DynamicResource Accept_Reject}"
+                    HorizontalAlignment="Stretch" Click="Reject_Click" />
+            <Button Grid.Column="1" Classes="primary" Content="{DynamicResource Accept_Accept}"
+                    HorizontalAlignment="Stretch" Click="Accept_Click" />
+          </Grid>
+        </StackPanel>
+      </Border>
+    </Grid>
+
+  </Grid>
+</UserControl>
