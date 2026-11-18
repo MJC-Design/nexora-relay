@@ -1,19 +1,20 @@
 # Fase de compilación
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
-WORKDIR /app
+WORKDIR /src
 
-# Copiar todo el código fuente manteniendo la estructura
+# Copiar todo el repositorio completo
 COPY . .
 
-# Publicar el proyecto del Relay
-RUN dotnet publish SoporteRemoto.Relay/SoporteRemoto.Relay.csproj -c Release -o /app/publish --no-restore
+# Restaurar y publicar usando la ruta correcta desde la raíz
+RUN dotnet restore "src/SoporteRemoto.Relay/SoporteRemoto.Relay.csproj"
+RUN dotnet publish "src/SoporteRemoto.Relay/SoporteRemoto.Relay.csproj" -c Release -o /app/publish
 
 # Fase de ejecución
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/publish .
 
-# Render asigna el puerto dinámicamente mediante la variable PORT
+# Puerto dinámico inyectado por Render
 ENV ASPNETCORE_URLS=http://+:$PORT
 
 ENTRYPOINT ["dotnet", "SoporteRemoto.Relay.dll"]
